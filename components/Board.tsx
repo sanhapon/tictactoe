@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from './Board.module.scss';
+import { findBestMove } from "@/utils/Minimax";
 
 const winList = [
     [0,1,2], [3,4,5], [6,7,8],
@@ -13,35 +14,38 @@ const Board = () => {
     const [isX, setIsX] = useState<boolean | null>(null);
 
     useEffect(() => {
-        if (isX !== null) {
-            const toFind = isX ? "X" : "O";
-            const selectedList :number[] = [];
-
-            let i = 0;
-            for(i = 0; i<selected.length; i++) {
-                if (selected[i] === toFind) {
-                    selectedList.push(i);
-                }
-            }
-
-            for(let win of winList) {
-                const winner = win.reduce((prev, curr) => { return prev && selectedList.includes(curr); }, true);
-                if (winner) {
-                    setWinnerLine(win);
-                    console.log(win)
-                    break;
-                }
+        const toFind = isX ? "X" : "O";
+        const selectedList :number[] = [];
+        let i = 0;
+        for(i = 0; i<selected.length; i++) {
+            if (selected[i] === toFind) {
+                selectedList.push(i);
             }
         }
-
+        for(let win of winList) {
+            const winner = win.reduce((prev, curr) => { return prev && selectedList.includes(curr); }, true);
+            if (winner) {
+                setWinnerLine(win);
+                break;
+            }
+        }
     }, [isX, selected])
 
-    const onClick = (ind: number) => {
-        if (selected[ind] === null) {
-            const target = isX ? "O" : "X";
-            setIsX(!isX);
+    useEffect(() => {
+        if (isX === false) {
+            var moveIndex = findBestMove(selected, 1, true);
+            var newSelected = selected.map((s, i) => i === moveIndex? "O" : s);
+            setSelectd(newSelected);
+        }
+    }, [isX])
 
-            const newSelected = selected.map((s, i) => ind === i? target : s);
+    useEffect(() => {
+        setIsX(!isX);
+    }, [selected])
+
+    const onClick = (ind: number) => {
+        if (selected[ind] === null && (isX === null || isX)) {
+            const newSelected = selected.map((s, i) => ind === i? "X" : s);
             setSelectd(newSelected);
         }
     }
