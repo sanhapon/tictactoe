@@ -51,16 +51,19 @@ const Board = () => {
     }
 
     return (
-        <div className={styles.Board}>
-            {selected.map((item, ind) => {
-                return (
-                    <button key={ind}
-                        className={winerLine.includes(ind) ? styles.Win : ""}
-                        onClick={(e) => onClick(ind)}>{selected[ind]}
-                    </button>
-                );
-            })}
-        </div>
+        <>
+            <h1 className={styles.Title}>Tic Tac Toe</h1>
+            <div className={styles.Board}>
+                {selected.map((item, ind) => {
+                    return (
+                        <button key={ind}
+                            className={winerLine.includes(ind) ? styles.Win : ""}
+                            onClick={(e) => onClick(ind)}>{selected[ind]}
+                        </button>
+                    );
+                })}
+            </div>
+        </>
     )
 }
 
