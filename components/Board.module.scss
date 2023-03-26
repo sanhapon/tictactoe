@@ -18,9 +18,20 @@
         background-color: white;
         font-size: 2rem;
         cursor: pointer;
+
+
     }
 
     .Win {
         background-color: green;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .Board {
+        padding: 10px;
+        > button {
+            flex-basis: 26%;
+        }
     }
 }
